@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CharTab from "../components/CharTab";
 import Form from "../components/Form";
 import Comment from "../components/Comment";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 function Home() {
   const data = useSelector((state) => state.commentSlice);
+  const { isLoggedIn } = useSelector((state) => state.authSlice);
   console.log(data);
   const [char, setChar] = useState("woody");
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      const notify = () => toast("로그인 성공!");
+      notify();
+    }
+  }, []);
+
   return (
     <>
+      <ToastContainer />
       <CharTab char={char} setChar={setChar} />
       <Form setChar={setChar} />
       <div>

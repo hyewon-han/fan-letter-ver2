@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
 import { useSelector } from "react-redux";
 
-function Layout({ children }) {
+function Layout() {
   // const [isLogined, setIsLogined] = useState(false);
   const { isLoggedIn } = useSelector((state) => state.authSlice);
   console.log(isLoggedIn);
@@ -22,16 +22,16 @@ function Layout({ children }) {
         <Link to="/">
           <StSpan>Fan Letter to Toy Story 💌</StSpan>
         </Link>
-        {isLoggedIn ? (
-          <Btns>
-            <Link to="/profile">
-              <Button value="MY PROFILE" />
-            </Link>
-            <Button value="LOGOUT" />
-          </Btns>
-        ) : null}
+        <Btns>
+          <Link to="/profile">
+            <Button value="MY PROFILE" />
+          </Link>
+          <Button value="LOGOUT" />
+        </Btns>
       </StHeader>
-      <StLayout>{children}</StLayout>
+      <StLayout>
+        <Outlet />
+      </StLayout>
       <StFooter>
         <span>
           Copyright &copy; Fan Letter to Toy Story All rights reserved

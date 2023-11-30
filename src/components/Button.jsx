@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import { theme } from "../GlobalStyle";
 
 function Button({ value, onClick, clicked, size, disabled }) {
-  console.log(disabled);
   return (
     <StBtn onClick={onClick} clicked={clicked} size={size} disabled={disabled}>
       {value}

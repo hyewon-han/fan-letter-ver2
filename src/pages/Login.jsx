@@ -4,8 +4,10 @@ import styled from "styled-components";
 import { theme } from "../GlobalStyle";
 import authApi from "../axios/api";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../redux/modules/authSlice";
+import { loginUser, signUpUser } from "../redux/modules/authSlice";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const [id, setId] = useState("");
@@ -33,24 +35,54 @@ function Login() {
 
   const signIn = async (e) => {
     e.preventDefault();
-    const loginedUser = {
+    const signInObj = {
       id,
       password,
     };
     try {
-      const response = await authApi.post("/login", loginedUser);
+      const response = await authApi.post("/login", signInObj);
       const accessToken = response.data.accessToken;
       console.log(response.data);
       dispatch(loginUser(accessToken));
+      const notify = () => toast("로그인 성공!");
+      notify();
       navigate("/");
     } catch (error) {
       console.log(error);
+      const { response } = error;
+      console.log(response.data.message);
+      const notify = () => toast(response.data.message);
+      notify();
     }
-    // dispatch(__loginUser(loginUser));
+  };
+
+  const signUp = async (e) => {
+    e.preventDefault();
+    const signUpObj = {
+      id,
+      password,
+      nickname,
+    };
+    try {
+      const response = await authApi.post("/register", signUpObj);
+      console.log(response.data);
+      dispatch(signUpUser());
+      navigate("/");
+      const notify = () => toast("회원가입 성공!");
+      notify();
+    } catch (error) {
+      const { response } = error;
+      console.log(response);
+
+      console.log(response.data.message);
+      const notify = () => toast(response.data.message);
+      notify();
+    }
   };
 
   return (
     <Container>
+      <ToastContainer />
       {isLoginPage ? (
         <StForm onSubmit={signIn}>
           <h1>LOG IN 😀</h1>
@@ -76,7 +108,7 @@ function Login() {
           </Btns>
         </StForm>
       ) : (
-        <StForm>
+        <StForm onSubmit={signUp}>
           <h1>JOIN 😀</h1>
           <input
             type="text"
