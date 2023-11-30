@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import Button from "./Button";
 import { Context } from "../Context";
 import { useDispatch } from "react-redux";
-import { createData } from "../redux/modules/comment";
+import { createData } from "../redux/modules/commentSlice";
 
 function Form({ setChar }) {
   const [name, setName] = useState("");

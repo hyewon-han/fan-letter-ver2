@@ -1,10 +1,11 @@
-import { createStore, combineReducers } from "redux";
-import comment from "../modules/comment";
+import comment from "../modules/commentSlice";
+import { configureStore } from "@reduxjs/toolkit";
 
-const rootReducer = combineReducers({
-  comment,
+const store = configureStore({
+  reducer: {
+    comment,
+  },
 });
-const store = createStore(rootReducer);
 
 export default store;
 

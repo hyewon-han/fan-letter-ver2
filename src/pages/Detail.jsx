@@ -5,7 +5,7 @@ import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
 import { Context } from "../Context";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteData, updateData } from "../redux/modules/comment";
+import { deleteData, updateData } from "../redux/modules/commentSlice";
 
 function Detail() {
   const data = useSelector((state) => state.comment);
