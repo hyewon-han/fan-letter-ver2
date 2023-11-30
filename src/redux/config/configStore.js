@@ -1,18 +1,41 @@
 import commentSlice from "../modules/commentSlice";
 import authSlice from "../modules/authSlice";
-import { configureStore } from "@reduxjs/toolkit";
+import {
+  combineReducers,
+  configureStore,
+  getDefaultMiddleware,
+} from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
+import { persistStore, persistReducer } from "redux-persist";
 
-const store = configureStore({
-  reducer: {
-    commentSlice,
-    authSlice,
-  },
+const rootReducer = combineReducers({
+  commentSlice,
+  authSlice,
 });
 
-export default store;
+// persist 설정
+const persistConfig = {
+  key: "auth", // 스토리지에 저장될 키
+  storage, // 사용할 스토리지 (로컬 스토리지)
+  whitelist: ["authSlice"],
+};
 
-// const onChange = () => {
-//   console.log(store.getState());
-// };
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// store.subscribe(onChange);
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
+
+const persistor = persistStore(store);
+
+export { store, persistor };
+
+const onChange = () => {
+  console.log(store.getState());
+};
+
+store.subscribe(onChange);

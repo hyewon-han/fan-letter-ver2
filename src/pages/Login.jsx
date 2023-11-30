@@ -2,12 +2,18 @@ import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
 import styled from "styled-components";
 import { theme } from "../GlobalStyle";
+import authApi from "../axios/api";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../redux/modules/authSlice";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [isLoginPage, setIsLoginPage] = useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   let isLoginButtonEnabled = false;
 
   const onChangeInput = (event) => {
@@ -25,12 +31,28 @@ function Login() {
     isLoginButtonEnabled = id !== "" && password !== "" && nickname !== "";
   }
 
-  console.log(id, password, nickname);
+  const signIn = async (e) => {
+    e.preventDefault();
+    const loginedUser = {
+      id,
+      password,
+    };
+    try {
+      const response = await authApi.post("/login", loginedUser);
+      const accessToken = response.data.accessToken;
+      console.log(response.data);
+      dispatch(loginUser(accessToken));
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+    // dispatch(__loginUser(loginUser));
+  };
 
   return (
     <Container>
       {isLoginPage ? (
-        <StForm>
+        <StForm onSubmit={signIn}>
           <h1>LOG IN 😀</h1>
           <input
             type="text"

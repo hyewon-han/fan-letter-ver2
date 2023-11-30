@@ -7,12 +7,12 @@ import { useSelector } from "react-redux";
 
 function Layout({ children }) {
   // const [isLogined, setIsLogined] = useState(false);
-  const { isLogined } = useSelector((state) => state.authSlice);
-  console.log(isLogined);
+  const { isLoggedIn } = useSelector((state) => state.authSlice);
+  console.log(isLoggedIn);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLogined === false) {
+    if (isLoggedIn === false) {
       navigate("/login");
     }
   }, []);
@@ -22,7 +22,7 @@ function Layout({ children }) {
         <Link to="/">
           <StSpan>Fan Letter to Toy Story 💌</StSpan>
         </Link>
-        {isLogined ? (
+        {isLoggedIn ? (
           <Btns>
             <Link to="/profile">
               <Button value="MY PROFILE" />
