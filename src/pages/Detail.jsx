@@ -4,9 +4,13 @@ import styled from "styled-components";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
 import { Context } from "../Context";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteData, updateData } from "../redux/modules/comment";
 
 function Detail() {
-  const { data, setData } = useContext(Context);
+  const data = useSelector((state) => state.comment);
+  const dispatch = useDispatch();
+  // const { data, setData } = useContext(Context);
   const { id } = useParams();
   const comment = data.find((item) => item.id === id);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
@@ -18,12 +22,7 @@ function Detail() {
     else {
       const result = window.confirm("이대로 수정하시겠습니까?");
       if (result) {
-        setData(
-          data.map((item) => {
-            if (item.id === id) return { ...item, content: textarea };
-            else return item;
-          })
-        );
+        dispatch(updateData({ id, textarea }));
         navigate("/");
       }
     }
@@ -32,7 +31,7 @@ function Detail() {
   const deleteComment = () => {
     const result = window.confirm("정말 삭제하시겠습니까?");
     if (result) {
-      setData(data.filter((item) => item.id !== id));
+      dispatch(deleteData(id));
       navigate("/");
     }
   };

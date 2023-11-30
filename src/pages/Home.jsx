@@ -4,9 +4,10 @@ import Form from "../components/Form";
 import Comment from "../components/Comment";
 import styled from "styled-components";
 import { Context } from "../Context";
+import { useSelector } from "react-redux";
 
 function Home() {
-  const { data } = useContext(Context);
+  const data = useSelector((state) => state.comment);
   const [char, setChar] = useState("woody");
 
   return (
