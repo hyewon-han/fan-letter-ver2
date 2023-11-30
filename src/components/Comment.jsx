@@ -12,7 +12,7 @@ function Comment({ comment }) {
           <StSpan>{comment.name}</StSpan>
           <p>{comment.createdAt}</p>
           <p>
-            {comment.content.length > 40
+            {comment.content?.length > 40
               ? `${comment.content.slice(0, 40)}...`
               : comment.content}
           </p>

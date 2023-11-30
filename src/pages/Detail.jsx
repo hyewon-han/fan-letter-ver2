@@ -1,16 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
-import { Context } from "../Context";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteData, updateData } from "../redux/modules/commentSlice";
 
 function Detail() {
-  const data = useSelector((state) => state.comment);
+  const data = useSelector((state) => state.commentSlice);
   const dispatch = useDispatch();
-  // const { data, setData } = useContext(Context);
   const { id } = useParams();
   const comment = data.find((item) => item.id === id);
   const [isInputDisabled, setIsInputDisabled] = useState(true);

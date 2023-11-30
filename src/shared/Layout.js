@@ -3,9 +3,12 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
+import { useSelector } from "react-redux";
 
 function Layout({ children }) {
-  const [isLogined, setIsLogined] = useState(true);
+  // const [isLogined, setIsLogined] = useState(false);
+  const { isLogined } = useSelector((state) => state.authSlice);
+  console.log(isLogined);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,14 +22,14 @@ function Layout({ children }) {
         <Link to="/">
           <StSpan>Fan Letter to Toy Story 💌</StSpan>
         </Link>
-        <Btns>
-          <Link to="/login">
-            <Button value="LOGIN" />
-          </Link>
-          <Link to="/profile">
-            <Button value="MY PROFILE" />
-          </Link>
-        </Btns>
+        {isLogined ? (
+          <Btns>
+            <Link to="/profile">
+              <Button value="MY PROFILE" />
+            </Link>
+            <Button value="LOGOUT" />
+          </Btns>
+        ) : null}
       </StHeader>
       <StLayout>{children}</StLayout>
       <StFooter>
@@ -65,7 +68,7 @@ const StLayout = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 90vh;
+  min-height: 82vh;
 `;
 
 const StSpan = styled.span`
