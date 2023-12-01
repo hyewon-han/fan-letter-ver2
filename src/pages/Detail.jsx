@@ -146,7 +146,7 @@ const StImg = styled.img`
 
 const CommentContent = styled.div`
   width: 300px;
-  height: 150px;
+  min-height: 150px;
 `;
 
 const StTextarea = styled.textarea`

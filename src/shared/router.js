@@ -33,6 +33,7 @@ const Router = () => {
               path="/detail/:id"
               element={<Navigate replace to="/login" />}
             />
+            <Route path="/profile" element={<Navigate replace to="/login" />} />
             <Route path="/login" element={<Login />} />
           </>
         )}

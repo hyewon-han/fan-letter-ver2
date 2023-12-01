@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../redux/modules/authSlice";
 
 function Layout() {
   // const { isLoggedIn } = useSelector((state) => state.authSlice);
@@ -14,6 +15,7 @@ function Layout() {
   //     navigate("/login");
   //   }
   // }, [isLoggedIn]);
+  const dispatch = useDispatch();
   return (
     <div>
       <StHeader>
@@ -22,9 +24,9 @@ function Layout() {
         </Link>
         <Btns>
           <Link to="/profile">
-            <Button value="MY PROFILE" />
+            <Button size="large" value="MY PROFILE" />
           </Link>
-          <Button value="LOGOUT" />
+          <Button value="LOGOUT" onClick={() => dispatch(logoutUser())} />
         </Btns>
       </StHeader>
       <StLayout>
