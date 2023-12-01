@@ -10,26 +10,27 @@ import authApi from "../axios/authApi";
 import {
   __deleteData,
   __getData,
+  __getDetailData,
   __updateData,
 } from "../redux/modules/commentSlice";
 
 function Detail() {
-  const { letters } = useSelector((state) => state.commentSlice);
+  const { letter } = useSelector((state) => state.commentSlice);
+  console.log(letter);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const comment = letters.find((item) => item.id === id);
-  const { avatar, nickname, createdAt, writedTo, content } = letters.find(
-    (item) => item.id === id
-  );
+  // const comment = letters?.find((item) => item.id === id);
+  // const { content } = letters?.find((item) => item.id === id);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
-  const [textarea, setTextarea] = useState(comment?.content);
+  const [textarea, setTextarea] = useState();
   const navigate = useNavigate();
   const { userId } = useSelector((state) => state.authSlice);
   const { accessToken } = useSelector((state) => state.authSlice);
-  console.log(comment?.userId);
-  console.log(userId);
+  // console.log(comment?.userId);
+  // console.log(userId);
+
   const updateComment = () => {
-    if (textarea === comment?.content) alert("수정사항이 없습니다.");
+    if (textarea === letter?.content) alert("수정사항이 없습니다.");
     else {
       const result = window.confirm("이대로 수정하시겠습니까?");
       if (result) {
@@ -48,9 +49,9 @@ function Detail() {
   };
 
   useEffect(() => {
-    dispatch(__getData());
-    setTextarea(comment?.content);
+    dispatch(__getDetailData(id));
   }, []);
+
   const refreshToken = async () => {
     try {
       const response = await authApi.get("/user", {
@@ -72,18 +73,18 @@ function Detail() {
     <Wrap>
       <CommentBox>
         <StDiv>
-          <StImg src={comment?.avatar} />
+          <StImg src={letter?.avatar} />
           <div>
-            <StP>{comment?.nickname}</StP>
-            <p>To. {comment?.writedTo}</p>
-            <p>{comment?.createdAt}</p>
+            <StP>{letter?.nickname}</StP>
+            <p>To. {letter?.writedTo}</p>
+            <p>{letter?.createdAt}</p>
           </div>
         </StDiv>
 
-        {userId === comment.userId ? (
+        {userId === letter?.userId ? (
           isInputDisabled ? (
             <>
-              <CommentContent>{comment?.content}</CommentContent>
+              <CommentContent>{letter?.content}</CommentContent>
               <Btns>
                 <Button
                   value="수정"
@@ -96,7 +97,7 @@ function Detail() {
             <>
               <StTextarea
                 type="text"
-                defaultValue={content}
+                defaultValue={letter.content}
                 disabled={isInputDisabled}
                 onChange={(e) => setTextarea(e.target.value)}
               />
@@ -108,12 +109,12 @@ function Detail() {
           )
         ) : isInputDisabled ? (
           <>
-            <CommentContent>{comment?.content}</CommentContent>
+            <CommentContent>{letter?.content}</CommentContent>
           </>
         ) : (
           <StTextarea
             type="text"
-            defaultValue={content}
+            defaultValue={letter.content}
             disabled={isInputDisabled}
             onChange={(e) => setTextarea(e.target.value)}
           />

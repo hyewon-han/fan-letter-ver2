@@ -6,6 +6,7 @@ import jsonApi from "../../axios/jsonApi";
 
 const initialState = {
   letters: [{}],
+  letter: null,
   isLoading: false,
   isError: false,
   error: null,
@@ -19,6 +20,19 @@ export const __getData = createAsyncThunk(
         "/letters?_sort=createdAt&_order=desc"
       );
 
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      console.log("error", error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const __getDetailData = createAsyncThunk(
+  "GET_DETAIL_DATA",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await jsonApi.get(`/letters/${payload}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       console.log("error", error);
@@ -99,6 +113,20 @@ const commentSlice = createSlice({
       state.letters = action.payload;
     },
     [__getData.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.payload;
+    },
+    [__getDetailData.pending]: (state, action) => {
+      state.isLoading = true;
+      state.isError = false;
+    },
+    [__getDetailData.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.letter = action.payload;
+    },
+    [__getDetailData.rejected]: (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.error = action.payload;

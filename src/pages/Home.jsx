@@ -14,7 +14,7 @@ import { logoutUser } from "../redux/modules/authSlice";
 
 function Home() {
   const { letters } = useSelector((state) => state.commentSlice);
-  // console.log(data);
+  console.log(letters);
   const { accessToken } = useSelector((state) => state.authSlice);
   const [char, setChar] = useState("woody");
   const dispatch = useDispatch();
