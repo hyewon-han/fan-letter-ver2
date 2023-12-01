@@ -40,7 +40,7 @@ function Login() {
       password,
     };
     try {
-      const response = await authApi.post("/login", signInObj);
+      const response = await authApi.post("/login?expiresIn=15s", signInObj);
       const accessToken = response.data.accessToken;
       const avatar = response.data.avatar;
       const nickname = response.data.nickname;

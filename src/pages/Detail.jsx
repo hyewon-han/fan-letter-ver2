@@ -26,8 +26,6 @@ function Detail() {
   const navigate = useNavigate();
   const { userId } = useSelector((state) => state.authSlice);
   const { accessToken } = useSelector((state) => state.authSlice);
-  // console.log(comment?.userId);
-  // console.log(userId);
 
   const updateComment = () => {
     if (textarea === letter?.content) alert("수정사항이 없습니다.");
@@ -62,6 +60,7 @@ function Detail() {
       });
       console.log(response);
     } catch (error) {
+      console.log(error);
       console.log("error", error.response.data.message);
       const notify = () => toast(error.response.data.message);
       notify();
