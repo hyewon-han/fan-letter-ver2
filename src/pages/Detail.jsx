@@ -4,12 +4,7 @@ import styled from "styled-components";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  __deleteData,
-  __updateData,
-  deleteData,
-  updateData,
-} from "../redux/modules/commentSlice";
+import { __deleteData, __updateData } from "../redux/modules/commentSlice";
 
 function Detail() {
   const { letters } = useSelector((state) => state.commentSlice);
@@ -19,7 +14,9 @@ function Detail() {
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   const [textarea, setTextarea] = useState(comment.content);
   const navigate = useNavigate();
-
+  const { userId } = useSelector((state) => state.authSlice);
+  console.log(comment.userId);
+  console.log(userId);
   const updateComment = () => {
     if (textarea === comment.content) alert("수정사항이 없습니다.");
     else {
@@ -56,17 +53,22 @@ function Detail() {
           />
         </StDiv>
         <Btns>
-          {isInputDisabled ? (
-            <>
-              <Button value="수정" onClick={() => setIsInputDisabled(false)} />
-              <Button value="삭제" onClick={deleteComment} />
-            </>
-          ) : (
-            <>
-              <Button value="수정완료" onClick={updateComment} />
-              <Button value="취소" onClick={() => setIsInputDisabled(true)} />
-            </>
-          )}
+          {userId === comment.userId ? (
+            isInputDisabled ? (
+              <>
+                <Button
+                  value="수정"
+                  onClick={() => setIsInputDisabled(false)}
+                />
+                <Button value="삭제" onClick={deleteComment} />
+              </>
+            ) : (
+              <>
+                <Button value="수정완료" onClick={updateComment} />
+                <Button value="취소" onClick={() => setIsInputDisabled(true)} />
+              </>
+            )
+          ) : null}
         </Btns>
       </CommentBox>
     </Wrap>

@@ -40,6 +40,7 @@ function Form({ setChar }) {
       content,
       writedTo: selectChar(),
       id,
+      userId,
     };
     dispatch(__createData(commentObj));
 
