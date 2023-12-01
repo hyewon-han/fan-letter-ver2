@@ -8,14 +8,42 @@ function Profile() {
   const { avatar, nickname, userId } = useSelector((state) => state.authSlice);
   const [isEditing, setIsEditing] = useState(false);
   const [modifiedNickname, setModifiedNickname] = useState();
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const handleAvatarClick = () => {
+    document.getElementById("fileInput").click();
+  };
+  const handleFileChange = (e) => {
+    // 파일 선택이 변경되었을 때 원하는 작업 수행
+    const selectedFile = e.target.files[0];
+    console.log("선택된 파일:", selectedFile);
+    if (selectedFile) {
+      // FileReader를 사용하여 이미지 파일을 Base64로 읽음
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // 읽어들인 이미지 데이터를 상태로 설정하여 프리뷰 갱신
+        setImagePreview(reader.result);
+      };
+      // 이미지 파일을 Base64로 읽어들임
+      reader.readAsDataURL(selectedFile);
+    }
+  };
   return (
     <ProfileBox>
       <h2>MY PROFILE</h2>
-      <Avatar src={avatar} />
+      <Avatar src={imagePreview || avatar} onClick={handleAvatarClick} />
+      <input
+        type="file"
+        id="fileInput"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
       {isEditing ? (
         <>
           <input
             defaultValue={nickname}
+            value={modifiedNickname}
             onChange={(e) => setModifiedNickname(e.target.value)}
           />
           <div>{userId}</div>
@@ -56,4 +84,7 @@ const Avatar = styled.img`
   width: 200px;
   height: 200px;
   box-shadow: ${theme.boxShadow};
+  &:hover {
+    cursor: pointer;
+  }
 `;
