@@ -41,6 +41,10 @@ const authSlice = createSlice({
     },
     logoutUser: (state, action) => {
       state.isLoggedIn = false;
+      state.accessToken = "";
+      state.avatar = "";
+      state.nickname = "";
+      state.userId = "";
     },
   },
   //   extraReducers: {

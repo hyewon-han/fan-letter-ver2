@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteData, updateData } from "../redux/modules/commentSlice";
 
 function Detail() {
-  const data = useSelector((state) => state.commentSlice);
+  const { letters } = useSelector((state) => state.commentSlice);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const comment = data.find((item) => item.id === id);
+  const comment = letters.find((item) => item.id === id);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   const [textarea, setTextarea] = useState(comment.content);
   const navigate = useNavigate();

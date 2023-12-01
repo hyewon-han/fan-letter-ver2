@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import Button from "./Button";
 
 import { useDispatch, useSelector } from "react-redux";
-import { createData } from "../redux/modules/commentSlice";
+import { __createData, createData } from "../redux/modules/commentSlice";
 
 function Form({ setChar }) {
   const [content, setContent] = useState("");
@@ -37,7 +37,7 @@ function Form({ setChar }) {
       writedTo: selectChar(),
       id,
     };
-    dispatch(createData(commentObj));
+    dispatch(__createData(commentObj));
 
     setContent("");
   };

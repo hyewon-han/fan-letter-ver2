@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { __getData } from "../redux/modules/commentSlice";
+import jsonApi from "../axios/jsonApi";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const { letters } = useSelector((state) => state.commentSlice);
@@ -13,6 +15,20 @@ function Home() {
   const { isLoggedIn } = useSelector((state) => state.authSlice);
   const [char, setChar] = useState("woody");
   const dispatch = useDispatch();
+  const [lettersData, setLettersData] = useState([]);
+  const navigate = useNavigate();
+  console.log("lettersData", lettersData);
+  // const fetchLetters = async () => {
+  //   const { data } = await jsonApi.get("/letters");
+  //   console.log(data);
+  //   setLetters(data);
+  // };
+
+  // useEffect(() => {
+  //   if (isLoggedIn === false) {
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -21,9 +37,17 @@ function Home() {
     }
   }, []);
 
+  // useEffect(() => {
+  //   fetchLetters();
+  // }, []);
+
   useEffect(() => {
     dispatch(__getData());
   }, [dispatch]);
+
+  useEffect(() => {
+    setLettersData(letters);
+  }, [letters]);
 
   return (
     <>
@@ -31,12 +55,13 @@ function Home() {
       <CharTab char={char} setChar={setChar} />
       <Form setChar={setChar} />
       <div>
-        {letters
-          .filter((comment) => comment.writedTo === char)
+        {lettersData
+          ?.filter((comment) => comment.writedTo === char)
           .map((comment) => (
             <Comment comment={comment} key={comment.id} />
           ))}
-        {letters.filter((comment) => comment.writedTo === char).length === 0 ? (
+        {lettersData?.filter((comment) => comment.writedTo === char).length ===
+        0 ? (
           <StDiv>{char} 에게 첫번째 코멘트를 남겨주세요! 😆</StDiv>
         ) : null}
       </div>

@@ -25,22 +25,37 @@ export const __getData = createAsyncThunk(
   }
 );
 
+export const __createData = createAsyncThunk(
+  "CREATE_DATA",
+  async (payload, thunkAPI) => {
+    try {
+      await jsonApi.post("/letters", payload);
+      return thunkAPI.fulfillWithValue(payload);
+    } catch (error) {
+      console.log("error", error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const commentSlice = createSlice({
   name: "comment",
   initialState,
   reducers: {
     createData: (state, action) => {
-      return [action.payload, ...state];
+      // await jsonApi.post("/letters", action.payload);
+      // return [action.payload, ...state.letters];
     },
     updateData: (state, action) => {
-      return state.map((item) => {
+      return state.letters.map((item) => {
         if (item.id === action.payload.id)
           return { ...item, content: action.payload.textarea };
         else return item;
       });
     },
-    deleteData: (state, action) => {
-      return state.filter((item) => item.id !== action.payload);
+    deleteData: async (state, action) => {
+      await jsonApi.delete(`/letters/${action.payload}`);
+      return state.letters.filter((item) => item.id !== action.payload);
     },
   },
   extraReducers: {
@@ -55,6 +70,20 @@ const commentSlice = createSlice({
       state.letters = action.payload;
     },
     [__getData.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.payload;
+    },
+    [__createData.pending]: (state, action) => {
+      state.isLoading = true;
+      state.isError = false;
+    },
+    [__createData.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.letters.push(action.payload);
+    },
+    [__createData.rejected]: (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.error = action.payload;

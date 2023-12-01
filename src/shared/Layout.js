@@ -6,16 +6,14 @@ import Button from "../components/Button";
 import { useSelector } from "react-redux";
 
 function Layout() {
-  // const [isLogined, setIsLogined] = useState(false);
-  const { isLoggedIn } = useSelector((state) => state.authSlice);
-  console.log(isLoggedIn);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isLoggedIn === false) {
-      navigate("/login");
-    }
-  }, []);
+  // const { isLoggedIn } = useSelector((state) => state.authSlice);
+  // const navigate = useNavigate();
+  // console.log(isLoggedIn);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     navigate("/login");
+  //   }
+  // }, [isLoggedIn]);
   return (
     <div>
       <StHeader>
