@@ -4,15 +4,16 @@ import { theme } from "../GlobalStyle";
 import { v4 as uuidv4 } from "uuid";
 import Button from "./Button";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createData } from "../redux/modules/commentSlice";
 
 function Form({ setChar }) {
-  const [name, setName] = useState("");
   const [content, setContent] = useState("");
   const id = uuidv4();
   const selectRef = useRef();
   const dispatch = useDispatch();
+  const { avatar, nickname, userId } = useSelector((state) => state.authSlice);
+  console.log(avatar, nickname, userId);
 
   const selectChar = () => {
     const selectedChar = selectRef.current.value;
@@ -29,7 +30,7 @@ function Form({ setChar }) {
     e.preventDefault();
     const commentObj = {
       createdAt: formattedDate,
-      name,
+      nickname,
       avatar:
         "https://tse2.mm.bing.net/th?id=OIP.Nen6j3vBZdl8g8kzNfoEHQAAAA&pid=Api&P=0&h=220",
       content,
@@ -37,24 +38,14 @@ function Form({ setChar }) {
       id,
     };
     dispatch(createData(commentObj));
-    setName("");
+
     setContent("");
   };
   return (
     <StForm onSubmit={createComment}>
       <StDiv>
-        <label htmlFor="name">name</label>
-        <StInput
-          id="name"
-          type="text"
-          placeholder="Write your name"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-          required
-          maxLength={10}
-        />
+        <label htmlFor="name">nickname</label>
+        <p>{nickname}</p>
 
         <label htmlFor="content">content</label>
         <StTextarea

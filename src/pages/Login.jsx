@@ -42,8 +42,11 @@ function Login() {
     try {
       const response = await authApi.post("/login", signInObj);
       const accessToken = response.data.accessToken;
+      const avatar = response.data.avatar;
+      const nickname = response.data.nickname;
+      const userId = response.data.userId;
       console.log(response.data);
-      dispatch(loginUser(accessToken));
+      dispatch(loginUser({ accessToken, avatar, nickname, userId }));
       const notify = () => toast("로그인 성공!");
       notify();
       navigate("/");

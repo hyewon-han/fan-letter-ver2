@@ -4,6 +4,9 @@ import authApi from "../../axios/api";
 const initialState = {
   isLoggedIn: false,
   accessToken: null,
+  avatar: null,
+  nickname: null,
+  userId: null,
 };
 
 // export const __loginUser = createAsyncThunk(
@@ -24,12 +27,14 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action) => {
-      console.log(state.accessToken);
       //   const loginObj = { isLoggedIn: true, accessToken: action.payload };
       //   localStorage.setItem("auth", JSON.stringify(loginObj));
       //   return { ...state, isLoggedIn: true, accessToken: action.payload };
       state.isLoggedIn = true;
-      state.accessToken = action.payload;
+      state.accessToken = action.payload.accessToken;
+      state.avatar = action.payload.avatar;
+      state.nickname = action.payload.nickname;
+      state.userId = action.payload.userId;
     },
     signUpUser: (state, action) => {
       state.isLoggedIn = true;
