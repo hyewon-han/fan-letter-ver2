@@ -13,7 +13,6 @@ function Form({ setChar }) {
   const selectRef = useRef();
   const dispatch = useDispatch();
   const { avatar, nickname, userId } = useSelector((state) => state.authSlice);
-  console.log(avatar, nickname, userId);
 
   const selectChar = () => {
     const selectedChar = selectRef.current.value;

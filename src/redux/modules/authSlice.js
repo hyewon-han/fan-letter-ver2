@@ -27,9 +27,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action) => {
-      //   const loginObj = { isLoggedIn: true, accessToken: action.payload };
-      //   localStorage.setItem("auth", JSON.stringify(loginObj));
-      //   return { ...state, isLoggedIn: true, accessToken: action.payload };
       state.isLoggedIn = true;
       state.accessToken = action.payload.accessToken;
       state.avatar = action.payload.avatar;
@@ -46,6 +43,9 @@ const authSlice = createSlice({
       state.nickname = "";
       state.userId = "";
     },
+    // updateAccessToken: (state, action) => {
+    //   state.accessToken = action.payload;
+    // },
   },
   //   extraReducers: {
   //     [__loginUser.pending]: (state, action) => {

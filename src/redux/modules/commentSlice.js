@@ -18,7 +18,7 @@ export const __getData = createAsyncThunk(
       const response = await jsonApi.get(
         "/letters?_sort=createdAt&_order=desc"
       );
-      console.log(response.data);
+
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       console.log("error", error);
@@ -96,7 +96,6 @@ const commentSlice = createSlice({
     [__getData.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.isError = false;
-      console.log(action.payload);
       state.letters = action.payload;
     },
     [__getData.rejected]: (state, action) => {

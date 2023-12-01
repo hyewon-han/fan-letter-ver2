@@ -7,27 +7,47 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { __getData } from "../redux/modules/commentSlice";
 import jsonApi from "../axios/jsonApi";
+import authApi from "../axios/authApi";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { logoutUser } from "../redux/modules/authSlice";
 
 function Home() {
   const { letters } = useSelector((state) => state.commentSlice);
   // console.log(data);
-  const { isLoggedIn } = useSelector((state) => state.authSlice);
+  const { isLoggedIn, accessToken } = useSelector((state) => state.authSlice);
   const [char, setChar] = useState("woody");
   const dispatch = useDispatch();
-  console.log(dispatch);
+  console.log(accessToken);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      const notify = () => toast("로그인 성공!");
-      notify();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     const notify = () => toast("로그인 성공!");
+  //     notify();
+  //   }
+  // }, []);
 
   useEffect(() => {
     dispatch(__getData());
-  }, [dispatch]);
+  }, []);
 
+  const refreshToken = async () => {
+    try {
+      const response = await authApi.get("/user", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log("error", error.response.data.message);
+      const notify = () => toast(error.response.data.message);
+      notify();
+      dispatch(logoutUser());
+    }
+  };
+  refreshToken();
   return (
     <>
       <ToastContainer />
