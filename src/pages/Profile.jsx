@@ -1,14 +1,21 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
+import authApi from "../axios/authApi";
+import { ToastContainer, toast } from "react-toastify";
+import { editUser, logoutUser } from "../redux/modules/authSlice";
 
 function Profile() {
-  const { avatar, nickname, userId } = useSelector((state) => state.authSlice);
+  const { accessToken, avatar, nickname, userId } = useSelector(
+    (state) => state.authSlice
+  );
   const [isEditing, setIsEditing] = useState(false);
-  const [modifiedNickname, setModifiedNickname] = useState();
+  const [modifiedNickname, setModifiedNickname] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [modifiedAvatar, setModifiedAvatar] = useState(null);
+  const dispatch = useDispatch();
 
   const handleAvatarClick = () => {
     document.getElementById("fileInput").click();
@@ -16,7 +23,11 @@ function Profile() {
   const handleFileChange = (e) => {
     // 파일 선택이 변경되었을 때 원하는 작업 수행
     const selectedFile = e.target.files[0];
-    console.log("선택된 파일:", selectedFile);
+    console.log("selectedFile", selectedFile);
+    // const imgUrl = URL.createObjectURL(selectedFile);
+    // console.log("imgUrl", imgUrl);
+    setModifiedAvatar(selectedFile);
+
     if (selectedFile) {
       // FileReader를 사용하여 이미지 파일을 Base64로 읽음
       const reader = new FileReader();
@@ -28,38 +39,91 @@ function Profile() {
       reader.readAsDataURL(selectedFile);
     }
   };
+  console.log(modifiedNickname, modifiedAvatar);
+
+  const onEditDone = async () => {
+    const formData = new FormData();
+    // avatar와 nickname 중 하나 또는 모두 변경 가능
+    formData.append("avatar", modifiedAvatar);
+    formData.append("nickname", modifiedNickname);
+    try {
+      const { data } = await authApi.patch("/profile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log("data", data);
+      const notify = () => toast(data.message);
+      notify();
+      const edittedNickname = data.nickname;
+      const edittedAvatar = data.avatar;
+      dispatch(
+        editUser({
+          nickname: edittedNickname || nickname,
+          avatar: edittedAvatar || avatar,
+        })
+      );
+      setIsEditing(false);
+    } catch (error) {
+      console.log("error", error);
+
+      const notify = () => toast(error.response.data.message);
+      notify();
+    }
+  };
+  const refreshToken = async () => {
+    try {
+      const response = await authApi.get("/user", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      console.log("error", error.response.data.message);
+      const notify = () => toast(error.response.data.message);
+      notify();
+      dispatch(logoutUser());
+    }
+  };
+  refreshToken();
   return (
-    <ProfileBox>
-      <h2>MY PROFILE</h2>
-      <Avatar src={imagePreview || avatar} onClick={handleAvatarClick} />
-      <input
-        type="file"
-        id="fileInput"
-        accept="image/*"
-        style={{ display: "none" }}
-        onChange={handleFileChange}
-      />
-      {isEditing ? (
-        <>
-          <input
-            defaultValue={nickname}
-            value={modifiedNickname}
-            onChange={(e) => setModifiedNickname(e.target.value)}
-          />
-          <div>{userId}</div>
-          <div>
-            <Button value="취소" onClick={() => setIsEditing(false)} />
-            <Button value="수정완료" />
-          </div>
-        </>
-      ) : (
-        <>
-          <div>{nickname}</div>
-          <div>{userId}</div>
-          <Button value="수정" onClick={() => setIsEditing(true)} />
-        </>
-      )}
-    </ProfileBox>
+    <>
+      <ToastContainer />
+      <ProfileBox>
+        <h2>MY PROFILE</h2>
+        <Avatar src={imagePreview || avatar} onClick={handleAvatarClick} />
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+        {isEditing ? (
+          <>
+            <input
+              defaultValue={nickname}
+              onChange={(e) => setModifiedNickname(e.target.value)}
+            />
+            <div>{userId}</div>
+            <div>
+              <Button value="취소" onClick={() => setIsEditing(false)} />
+              <Button value="수정완료" onClick={onEditDone} />
+            </div>
+          </>
+        ) : (
+          <>
+            <div>{nickname}</div>
+            <div>{userId}</div>
+            <Button value="수정" onClick={() => setIsEditing(true)} />
+          </>
+        )}
+      </ProfileBox>
+    </>
   );
 }
 

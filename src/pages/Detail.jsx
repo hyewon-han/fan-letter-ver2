@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { logoutUser } from "../redux/modules/authSlice";
 import authApi from "../axios/authApi";
+
 import {
   __deleteData,
   __getData,
@@ -106,17 +107,8 @@ function Detail() {
               </Btns>
             </>
           )
-        ) : isInputDisabled ? (
-          <>
-            <CommentContent>{letter?.content}</CommentContent>
-          </>
         ) : (
-          <StTextarea
-            type="text"
-            defaultValue={letter.content}
-            disabled={isInputDisabled}
-            onChange={(e) => setTextarea(e.target.value)}
-          />
+          <CommentContent>{letter?.content}</CommentContent>
         )}
       </CommentBox>
     </Wrap>

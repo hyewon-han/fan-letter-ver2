@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import fakeData from "../../fakeData.json";
-import axios from "axios";
+// import fakeData from "../../fakeData.json";
 import jsonApi from "../../axios/jsonApi";
 // const initialState = fakeData;
 

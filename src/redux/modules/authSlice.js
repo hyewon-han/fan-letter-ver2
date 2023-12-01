@@ -43,6 +43,10 @@ const authSlice = createSlice({
       state.nickname = "";
       state.userId = "";
     },
+    editUser: (state, action) => {
+      state.avatar = action.payload.avatar;
+      state.nickname = action.payload.nickname;
+    },
     // updateAccessToken: (state, action) => {
     //   state.accessToken = action.payload;
     // },
@@ -58,5 +62,6 @@ const authSlice = createSlice({
   //   },
 });
 
-export const { loginUser, signUpUser, logoutUser } = authSlice.actions;
+export const { loginUser, signUpUser, logoutUser, editUser } =
+  authSlice.actions;
 export default authSlice.reducer;
