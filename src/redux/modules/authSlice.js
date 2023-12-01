@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import authApi from "../../axios/api";
+import authApi from "../../axios/authApi";
 
 const initialState = {
   isLoggedIn: false,

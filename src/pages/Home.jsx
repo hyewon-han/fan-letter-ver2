@@ -3,14 +3,16 @@ import CharTab from "../components/CharTab";
 import Form from "../components/Form";
 import Comment from "../components/Comment";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
+import { __getData } from "../redux/modules/commentSlice";
 
 function Home() {
-  const data = useSelector((state) => state.commentSlice);
+  const { letters } = useSelector((state) => state.commentSlice);
+  // console.log(data);
   const { isLoggedIn } = useSelector((state) => state.authSlice);
-  console.log(data);
   const [char, setChar] = useState("woody");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -19,18 +21,22 @@ function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    dispatch(__getData());
+  }, [dispatch]);
+
   return (
     <>
       <ToastContainer />
       <CharTab char={char} setChar={setChar} />
       <Form setChar={setChar} />
       <div>
-        {data
+        {letters
           .filter((comment) => comment.writedTo === char)
           .map((comment) => (
             <Comment comment={comment} key={comment.id} />
           ))}
-        {data.filter((comment) => comment.writedTo === char).length === 0 ? (
+        {letters.filter((comment) => comment.writedTo === char).length === 0 ? (
           <StDiv>{char} 에게 첫번째 코멘트를 남겨주세요! 😆</StDiv>
         ) : null}
       </div>

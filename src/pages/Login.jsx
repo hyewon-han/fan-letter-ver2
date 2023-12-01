@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
 import styled from "styled-components";
 import { theme } from "../GlobalStyle";
-import authApi from "../axios/api";
+import authApi from "../axios/authApi";
 import { useDispatch } from "react-redux";
 import { loginUser, signUpUser } from "../redux/modules/authSlice";
 import { useNavigate } from "react-router-dom";
