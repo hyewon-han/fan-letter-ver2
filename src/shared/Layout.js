@@ -1,17 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { theme } from "../GlobalStyle";
+import Button from "../components/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../redux/modules/authSlice";
 
-function Layout({ children }) {
+function Layout() {
+  // const { isLoggedIn } = useSelector((state) => state.authSlice);
+  // const navigate = useNavigate();
+  // console.log(isLoggedIn);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     navigate("/login");
+  //   }
+  // }, [isLoggedIn]);
+  const dispatch = useDispatch();
   return (
     <div>
       <StHeader>
         <Link to="/">
           <StSpan>Fan Letter to Toy Story 💌</StSpan>
         </Link>
+        <Btns>
+          <Link to="/profile">
+            <Button size="large" value="MY PROFILE" />
+          </Link>
+          <Button value="LOGOUT" onClick={() => dispatch(logoutUser())} />
+        </Btns>
       </StHeader>
-      <StLayout>{children}</StLayout>
+      <StLayout>
+        <Outlet />
+      </StLayout>
       <StFooter>
         <span>
           Copyright &copy; Fan Letter to Toy Story All rights reserved
@@ -25,13 +45,14 @@ export default Layout;
 
 const StHeader = styled.header`
   width: 100%;
-  height: 50px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  margin: 30px 0px;
+  margin-bottom: 30px;
   font-size: 22px;
+  background-color: ${theme.yellow};
 `;
 
 const StFooter = styled.footer`
@@ -47,11 +68,19 @@ const StLayout = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 90vh;
+  min-height: 82vh;
 `;
 
 const StSpan = styled.span`
   font-family: "Rubik", sans-serif;
   font-size: 2rem;
   text-shadow: 1px 1px 2px ${theme.blue};
+`;
+
+const Btns = styled.div`
+  position: absolute;
+  right: 5%;
+  width: 13%;
+  display: flex;
+  justify-content: space-between;
 `;

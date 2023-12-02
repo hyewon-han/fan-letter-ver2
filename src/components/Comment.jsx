@@ -9,10 +9,10 @@ function Comment({ comment }) {
       <CommentBox>
         <StImg src={comment.avatar} />
         <div>
-          <StSpan>{comment.name}</StSpan>
+          <StSpan>{comment.nickname}</StSpan>
           <p>{comment.createdAt}</p>
           <p>
-            {comment.content.length > 40
+            {comment.content?.length > 40
               ? `${comment.content.slice(0, 40)}...`
               : comment.content}
           </p>

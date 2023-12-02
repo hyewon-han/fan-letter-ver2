@@ -1,29 +1,36 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
-import { Context } from "../Context";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import { logoutUser } from "../redux/modules/authSlice";
+import authApi from "../axios/authApi";
+
+import {
+  __deleteData,
+  __getData,
+  __getDetailData,
+  __updateData,
+} from "../redux/modules/commentSlice";
 
 function Detail() {
-  const { data, setData } = useContext(Context);
+  const { letter } = useSelector((state) => state.commentSlice);
+  const dispatch = useDispatch();
   const { id } = useParams();
-  const comment = data.find((item) => item.id === id);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
-  const [textarea, setTextarea] = useState(comment.content);
+  const [textarea, setTextarea] = useState();
   const navigate = useNavigate();
+  const { userId } = useSelector((state) => state.authSlice);
+  const { accessToken } = useSelector((state) => state.authSlice);
 
   const updateComment = () => {
-    if (textarea === comment.content) alert("수정사항이 없습니다.");
+    if (textarea === letter?.content) alert("수정사항이 없습니다.");
     else {
       const result = window.confirm("이대로 수정하시겠습니까?");
       if (result) {
-        setData(
-          data.map((item) => {
-            if (item.id === id) return { ...item, content: textarea };
-            else return item;
-          })
-        );
+        dispatch(__updateData({ id, textarea }));
         navigate("/");
       }
     }
@@ -32,40 +39,73 @@ function Detail() {
   const deleteComment = () => {
     const result = window.confirm("정말 삭제하시겠습니까?");
     if (result) {
-      setData(data.filter((item) => item.id !== id));
+      dispatch(__deleteData(id));
       navigate("/");
     }
   };
+
+  useEffect(() => {
+    dispatch(__getDetailData(id));
+  }, []);
+
+  const refreshToken = async () => {
+    try {
+      const response = await authApi.get("/user", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      const notify = () => toast(error.response.data.message);
+      notify();
+      dispatch(logoutUser());
+    }
+  };
+  refreshToken();
   return (
     <Wrap>
       <CommentBox>
         <StDiv>
-          <StImg src={comment.avatar} />
+          <StImg src={letter?.avatar} />
           <div>
-            <StP>{comment.name}</StP>
-            <p>To. {comment.writedTo}</p>
-            <p>{comment.createdAt}</p>
+            <StP>{letter?.nickname}</StP>
+            <p>To. {letter?.writedTo}</p>
+            <p>{letter?.createdAt}</p>
           </div>
-          <StTextarea
-            type="text"
-            value={textarea}
-            disabled={isInputDisabled}
-            onChange={(e) => setTextarea(e.target.value)}
-          />
         </StDiv>
-        <Btns>
-          {isInputDisabled ? (
+
+        {userId === letter?.userId ? (
+          isInputDisabled ? (
             <>
-              <Button value="수정" onClick={() => setIsInputDisabled(false)} />
-              <Button value="삭제" onClick={deleteComment} />
+              <CommentContent>{letter?.content}</CommentContent>
+              <Btns>
+                <Button
+                  value="수정"
+                  onClick={() => setIsInputDisabled(false)}
+                />
+                <Button value="삭제" onClick={deleteComment} />
+              </Btns>
             </>
           ) : (
             <>
-              <Button value="수정완료" onClick={updateComment} />
-              <Button value="취소" onClick={() => setIsInputDisabled(true)} />
+              <StTextarea
+                type="text"
+                defaultValue={letter.content}
+                disabled={isInputDisabled}
+                onChange={(e) => setTextarea(e.target.value)}
+              />
+              <Btns>
+                <Button value="수정완료" onClick={updateComment} />
+                <Button value="취소" onClick={() => setIsInputDisabled(true)} />
+              </Btns>
             </>
-          )}
-        </Btns>
+          )
+        ) : (
+          <CommentContent>{letter?.content}</CommentContent>
+        )}
       </CommentBox>
     </Wrap>
   );
@@ -92,9 +132,14 @@ const StImg = styled.img`
   box-shadow: ${theme.boxShadow};
 `;
 
+const CommentContent = styled.div`
+  width: 300px;
+  min-height: 150px;
+`;
+
 const StTextarea = styled.textarea`
   width: 300px;
-  height: 200px;
+  height: 150px;
   resize: none;
 `;
 

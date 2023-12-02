@@ -1,16 +1,18 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { theme } from "../GlobalStyle";
 import { v4 as uuidv4 } from "uuid";
 import Button from "./Button";
-import { Context } from "../Context";
+import defaultUser from "../assets/default-user.jpeg";
+import { useDispatch, useSelector } from "react-redux";
+import { __createData, createData } from "../redux/modules/commentSlice";
 
 function Form({ setChar }) {
-  const { data, setData } = useContext(Context);
-  const [name, setName] = useState("");
   const [content, setContent] = useState("");
   const id = uuidv4();
   const selectRef = useRef();
+  const dispatch = useDispatch();
+  const { avatar, nickname, userId } = useSelector((state) => state.authSlice);
 
   const selectChar = () => {
     const selectedChar = selectRef.current.value;
@@ -19,40 +21,35 @@ function Form({ setChar }) {
   };
 
   const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-    dateStyle: "full",
-    timeStyle: "short",
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
   }).format(new Date());
 
   const createComment = (e) => {
     e.preventDefault();
     const commentObj = {
       createdAt: formattedDate,
-      name,
-      avatar:
-        "https://tse2.mm.bing.net/th?id=OIP.Nen6j3vBZdl8g8kzNfoEHQAAAA&pid=Api&P=0&h=220",
+      nickname,
+      avatar: avatar ?? defaultUser,
       content,
       writedTo: selectChar(),
       id,
+      userId,
     };
-    setData([commentObj, ...data]);
-    setName("");
+    dispatch(__createData(commentObj));
+
     setContent("");
   };
   return (
     <StForm onSubmit={createComment}>
       <StDiv>
-        <label htmlFor="name">name</label>
-        <StInput
-          id="name"
-          type="text"
-          placeholder="Write your name"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-          required
-          maxLength={10}
-        />
+        <label htmlFor="name">nickname</label>
+        <p>{nickname}</p>
 
         <label htmlFor="content">content</label>
         <StTextarea
