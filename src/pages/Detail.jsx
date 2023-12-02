@@ -17,11 +17,8 @@ import {
 
 function Detail() {
   const { letter } = useSelector((state) => state.commentSlice);
-  console.log(letter);
   const dispatch = useDispatch();
   const { id } = useParams();
-  // const comment = letters?.find((item) => item.id === id);
-  // const { content } = letters?.find((item) => item.id === id);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   const [textarea, setTextarea] = useState();
   const navigate = useNavigate();
@@ -62,7 +59,6 @@ function Detail() {
       console.log(response);
     } catch (error) {
       console.log(error);
-      console.log("error", error.response.data.message);
       const notify = () => toast(error.response.data.message);
       notify();
       dispatch(logoutUser());

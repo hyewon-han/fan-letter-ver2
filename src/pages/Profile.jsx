@@ -13,32 +13,22 @@ function Profile() {
   const { accessToken, avatar, nickname, userId } = useSelector(
     (state) => state.authSlice
   );
-  //
   const { userLetters } = useSelector((state) => state.commentSlice);
-  console.log(userLetters);
   const targetIds = userLetters.map((item) => item.id);
-  console.log(targetIds);
-  // const result = letters.filter((letter) => letter.userId === userId);
-  // console.log(result);
-  // const targetId = result.map((item) => item.id);
-  // console.log(targetId);
-
-  useEffect(() => {
-    dispatch(__getUserLetters(userId));
-  }, []);
-
-  //
   const [isEditing, setIsEditing] = useState(false);
   const [modifiedNickname, setModifiedNickname] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [modifiedAvatar, setModifiedAvatar] = useState(null);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(__getUserLetters(userId));
+  }, []);
+
   const handleAvatarClick = () => {
     document.getElementById("fileInput").click();
   };
   const handleFileChange = (e) => {
-    // 파일 선택이 변경되었을 때 원하는 작업 수행
     const selectedFile = e.target.files[0];
     console.log("selectedFile", selectedFile);
     // const imgUrl = URL.createObjectURL(selectedFile);
@@ -56,11 +46,9 @@ function Profile() {
       reader.readAsDataURL(selectedFile);
     }
   };
-  // console.log(modifiedNickname, modifiedAvatar);
 
   const onEditDone = async () => {
     const formData = new FormData();
-    // avatar와 nickname 중 하나 또는 모두 변경 가능
     formData.append("avatar", modifiedAvatar);
     formData.append("nickname", modifiedNickname);
     try {

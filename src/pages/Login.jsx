@@ -15,7 +15,6 @@ function Login() {
   const [nickname, setNickname] = useState("");
   const [isLoginPage, setIsLoginPage] = useState(true);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   let isLoginButtonEnabled = false;
 
   const onChangeInput = (event) => {
@@ -45,14 +44,12 @@ function Login() {
       const avatar = response.data.avatar;
       const nickname = response.data.nickname;
       const userId = response.data.userId;
-      console.log(response.data);
       dispatch(loginUser({ accessToken, avatar, nickname, userId }));
       const notify = () => toast("로그인 성공!");
       notify();
     } catch (error) {
       console.log(error);
       const { response } = error;
-      console.log(response.data.message);
       const notify = () => toast(response.data.message);
       notify();
     }
@@ -74,8 +71,6 @@ function Login() {
     } catch (error) {
       const { response } = error;
       console.log(response);
-
-      console.log(response.data.message);
       const notify = () => toast(response.data.message);
       notify();
     }

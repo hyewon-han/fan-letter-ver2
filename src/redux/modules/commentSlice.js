@@ -92,10 +92,6 @@ export const __updateUser = createAsyncThunk(
           avatar: payload.avatar,
         });
       });
-      // await jsonApi.patch(`/letters/${payload.targetIds}`, {
-      //   nickname: payload.nickname,
-      //   avatar: payload.avatar,
-      // });
       await Promise.all(updatePromises);
       console.log("일괄 업데이트 완료!");
       return thunkAPI.fulfillWithValue(payload);
@@ -121,23 +117,7 @@ export const __getUserLetters = createAsyncThunk(
 const commentSlice = createSlice({
   name: "comment",
   initialState,
-  reducers: {
-    createData: (state, action) => {
-      // await jsonApi.post("/letters", action.payload);
-      // return [action.payload, ...state.letters];
-    },
-    updateData: (state, action) => {
-      // return state.letters.map((item) => {
-      //   if (item.id === action.payload.id)
-      //     return { ...item, content: action.payload.textarea };
-      //   else return item;
-      // });
-    },
-    deleteData: async (state, action) => {
-      // await jsonApi.delete(`/letters/${action.payload}`);
-      // return state.letters.filter((item) => item.id !== action.payload);
-    },
-  },
+  reducers: {},
   extraReducers: {
     [__getData.pending]: (state, action) => {
       state.isLoading = true;

@@ -52,7 +52,7 @@
     {
       "createdAt": "23. 12. 01. 오후 06:13:23",
       "nickname": "혜원짱",
-      "avatar": "https://tse2.mm.bing.net/th?id=OIP.Nen6j3vBZdl8g8kzNfoEHQAAAA&pid=Api&P=0&h=220",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/fe3548d6-a4bf-4be9-9405-1cc3e12e98f7.jpg",
       "content": "please help me",
       "writedTo": "woody",
       "id": "18e0e0a5-32d3-45c1-8eb4-16e47a66e7be",
@@ -138,6 +138,15 @@
       "writedTo": "woody",
       "id": "a69686d7-6bd7-4a8a-9e42-94ee37553daa",
       "userId": "wow1234"
+    },
+    {
+      "createdAt": "23. 12. 02. 오후 03:39:51",
+      "nickname": "혜원짱",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/fe3548d6-a4bf-4be9-9405-1cc3e12e98f7.jpg",
+      "content": "ㅅㄷㄴㅅ",
+      "writedTo": "woody",
+      "id": "4606213d-bf82-4b9e-914f-b3a027f94c46",
+      "userId": "hello1234"
     }
   ]
 }

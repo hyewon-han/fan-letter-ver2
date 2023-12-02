@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import authApi from "../../axios/authApi";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoggedIn: false,
@@ -8,19 +7,6 @@ const initialState = {
   nickname: null,
   userId: null,
 };
-
-// export const __loginUser = createAsyncThunk(
-//   "LOGIN_USER",
-//   async (payload, thunkAPI) => {
-//     try {
-//       await authApi.post("/login", payload);
-//       console.log(payload);
-//       return thunkAPI.fulfillWithValue(payload);
-//     } catch (error) {
-//       console.log("error", error);
-//     }
-//   }
-// );
 
 const authSlice = createSlice({
   name: "auth",
@@ -47,19 +33,7 @@ const authSlice = createSlice({
       state.avatar = action.payload.avatar;
       state.nickname = action.payload.nickname;
     },
-    // updateAccessToken: (state, action) => {
-    //   state.accessToken = action.payload;
-    // },
   },
-  //   extraReducers: {
-  //     [__loginUser.pending]: (state, action) => {
-  //       state.isLogined = false;
-  //     },
-  //     [__loginUser.fulfilled]: (state, action) => {
-  //       state.isLogined = true;
-  //       console.log(action.payload);
-  //     },
-  //   },
 });
 
 export const { loginUser, signUpUser, logoutUser, editUser } =
