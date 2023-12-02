@@ -6,6 +6,7 @@ import jsonApi from "../../axios/jsonApi";
 const initialState = {
   letters: [{}],
   letter: null,
+  userLetters: [{}],
   isLoading: false,
   isError: false,
   error: null,
@@ -81,6 +82,42 @@ export const __updateData = createAsyncThunk(
   }
 );
 
+export const __updateUser = createAsyncThunk(
+  "UPDATE_USER",
+  async (payload, thunkAPI) => {
+    try {
+      const updatePromises = payload.targetIds.map(async (id) => {
+        await jsonApi.patch(`/letters/${id}`, {
+          nickname: payload.nickname,
+          avatar: payload.avatar,
+        });
+      });
+      // await jsonApi.patch(`/letters/${payload.targetIds}`, {
+      //   nickname: payload.nickname,
+      //   avatar: payload.avatar,
+      // });
+      await Promise.all(updatePromises);
+      console.log("일괄 업데이트 완료!");
+      return thunkAPI.fulfillWithValue(payload);
+    } catch (error) {
+      console.log("error", error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const __getUserLetters = createAsyncThunk(
+  "GET_USER_LETTERS",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await jsonApi.get(`/letters?userId=${payload}`);
+      console.log(response.data);
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      console.log("error", error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 const commentSlice = createSlice({
   name: "comment",
   initialState,
@@ -170,6 +207,54 @@ const commentSlice = createSlice({
           return { ...item, content: action.payload.textarea };
         else return item;
       });
+    },
+    [__updateData.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.payload;
+    },
+    [__updateUser.pending]: (state, action) => {
+      state.isLoading = true;
+      state.isError = false;
+    },
+    [__updateUser.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      console.log(action.payload);
+      // state.letters.map((item) => {
+      //   if (item.id === action.payload.id)
+      //     return {
+      //       ...item,
+      //       nickname: action.payload.nickname,
+      //       avatar: action.payload.avatar,
+      //     };
+      //   else return item;
+      // });
+      state.letters.map((letter) => {
+        action.payload.targetIds.forEach((targetId) => {
+          if (letter.id === targetId)
+            return {
+              ...letter,
+              nickname: action.payload.nickname,
+              avatar: action.payload.avatar,
+            };
+          else return letter;
+        });
+      });
+    },
+    [__updateUser.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.payload;
+    },
+    [__getUserLetters.pending]: (state, action) => {
+      state.isLoading = true;
+      state.isError = false;
+    },
+    [__getUserLetters.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.userLetters = action.payload;
     },
   },
 });

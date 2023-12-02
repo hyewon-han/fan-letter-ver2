@@ -42,8 +42,8 @@
     },
     {
       "createdAt": "23. 12. 01. 오후 06:00:08",
-      "nickname": "와우",
-      "avatar": "https://tse2.mm.bing.net/th?id=OIP.Nen6j3vBZdl8g8kzNfoEHQAAAA&pid=Api&P=0&h=220",
+      "nickname": "와우제발",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/468c501e-373c-4bd4-b2f5-6e3ad2544bfa.jpg",
       "content": "test",
       "writedTo": "woody",
       "id": "1d40bd7b-0379-44e7-ab8a-0b9a4df56384",
@@ -57,6 +57,87 @@
       "writedTo": "woody",
       "id": "18e0e0a5-32d3-45c1-8eb4-16e47a66e7be",
       "userId": "hello1234"
+    },
+    {
+      "createdAt": "23. 12. 02. 오전 01:19:47",
+      "nickname": "와우제발",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/468c501e-373c-4bd4-b2f5-6e3ad2544bfa.jpg",
+      "content": "히히",
+      "writedTo": "woody",
+      "id": "1abed87a-3ab4-44f8-8004-c7136cf72725",
+      "userId": "wow1234"
+    },
+    {
+      "createdAt": "23. 12. 02. 오후 01:27:16",
+      "nickname": "와우제발",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/468c501e-373c-4bd4-b2f5-6e3ad2544bfa.jpg",
+      "content": "ㅅㄷㄴㅅ",
+      "writedTo": "woody",
+      "id": "0b47d468-a0cb-4f64-a217-9089cadc60dd",
+      "userId": "wow1234"
+    },
+    {
+      "createdAt": "23. 12. 02. 오후 01:33:10",
+      "nickname": "와우제발",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/468c501e-373c-4bd4-b2f5-6e3ad2544bfa.jpg",
+      "content": "ㅅㄷㄴㅅ",
+      "writedTo": "woody",
+      "id": "d94981a8-6494-44e8-b4f1-da399774cf43",
+      "userId": "wow1234"
+    },
+    {
+      "createdAt": "23. 12. 02. 오후 01:37:32",
+      "nickname": "hyewon",
+      "avatar": null,
+      "content": "fff",
+      "writedTo": "woody",
+      "id": "524fa625-c601-410e-ab51-0eb8fb8351a2",
+      "userId": "hw1635"
+    },
+    {
+      "createdAt": "23. 12. 02. 오후 01:41:13",
+      "nickname": "ㅎㅎ",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/ea4bbbd3-30ae-440b-a0c1-ee7e688e0e9e.jpg",
+      "content": "test",
+      "writedTo": "woody",
+      "id": "39695afa-7363-454c-ae96-b191c4686486",
+      "userId": "hi1635"
+    },
+    {
+      "createdAt": "23. 12. 02. 오후 01:43:00",
+      "nickname": "hyewon",
+      "avatar": "https://tse2.mm.bing.net/th?id=OIP.Nen6j3vBZdl8g8kzNfoEHQAAAA&pid=Api&P=0&h=220",
+      "content": "ddd",
+      "writedTo": "woody",
+      "id": "b280b7e6-5bba-4c47-94ee-79be72a803e1",
+      "userId": "hw1635"
+    },
+    {
+      "createdAt": "23. 12. 02. 오후 01:50:55",
+      "nickname": "hyewon",
+      "avatar": "https://tse2.mm.bing.net/th?id=OIP.Nen6j3vBZdl8g8kzNfoEHQAAAA&pid=Api&P=0&h=220",
+      "content": "gg",
+      "writedTo": "woody",
+      "id": "d7b352ce-118d-4c17-bac7-59ffc8ab39da",
+      "userId": "hw1635"
+    },
+    {
+      "createdAt": "23. 12. 02. 오후 01:52:01",
+      "nickname": "hyewon",
+      "avatar": "data:image/jpeg;base64,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",
+      "content": "ddd",
+      "writedTo": "woody",
+      "id": "74864b22-0889-4301-8453-66475e4a5b17",
+      "userId": "hw1635"
+    },
+    {
+      "createdAt": "23. 12. 02. 오후 02:56:27",
+      "nickname": "와우제발",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/468c501e-373c-4bd4-b2f5-6e3ad2544bfa.jpg",
+      "content": "와ㅠㅠ된다",
+      "writedTo": "woody",
+      "id": "a69686d7-6bd7-4a8a-9e42-94ee37553daa",
+      "userId": "wow1234"
     }
   ]
 }

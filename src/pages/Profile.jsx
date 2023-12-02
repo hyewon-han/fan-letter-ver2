@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { theme } from "../GlobalStyle";
@@ -6,11 +6,28 @@ import Button from "../components/Button";
 import authApi from "../axios/authApi";
 import { ToastContainer, toast } from "react-toastify";
 import { editUser, logoutUser } from "../redux/modules/authSlice";
+import { __getUserLetters, __updateUser } from "../redux/modules/commentSlice";
+import defaultUser from "../assets/default-user.jpeg";
 
 function Profile() {
   const { accessToken, avatar, nickname, userId } = useSelector(
     (state) => state.authSlice
   );
+  //
+  const { userLetters } = useSelector((state) => state.commentSlice);
+  console.log(userLetters);
+  const targetIds = userLetters.map((item) => item.id);
+  console.log(targetIds);
+  // const result = letters.filter((letter) => letter.userId === userId);
+  // console.log(result);
+  // const targetId = result.map((item) => item.id);
+  // console.log(targetId);
+
+  useEffect(() => {
+    dispatch(__getUserLetters(userId));
+  }, []);
+
+  //
   const [isEditing, setIsEditing] = useState(false);
   const [modifiedNickname, setModifiedNickname] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
@@ -39,7 +56,7 @@ function Profile() {
       reader.readAsDataURL(selectedFile);
     }
   };
-  console.log(modifiedNickname, modifiedAvatar);
+  // console.log(modifiedNickname, modifiedAvatar);
 
   const onEditDone = async () => {
     const formData = new FormData();
@@ -60,6 +77,13 @@ function Profile() {
       const edittedAvatar = data.avatar;
       dispatch(
         editUser({
+          nickname: edittedNickname || nickname,
+          avatar: edittedAvatar || avatar,
+        })
+      );
+      dispatch(
+        __updateUser({
+          targetIds,
           nickname: edittedNickname || nickname,
           avatar: edittedAvatar || avatar,
         })
@@ -95,7 +119,10 @@ function Profile() {
       <ToastContainer />
       <ProfileBox>
         <h2>MY PROFILE</h2>
-        <Avatar src={imagePreview || avatar} onClick={handleAvatarClick} />
+        <Avatar
+          src={imagePreview || avatar || defaultUser}
+          onClick={handleAvatarClick}
+        />
         <input
           type="file"
           id="fileInput"

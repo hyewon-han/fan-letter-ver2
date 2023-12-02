@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { theme } from "../GlobalStyle";
 import { v4 as uuidv4 } from "uuid";
 import Button from "./Button";
-
+import defaultUser from "../assets/default-user.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 import { __createData, createData } from "../redux/modules/commentSlice";
 
@@ -35,8 +35,7 @@ function Form({ setChar }) {
     const commentObj = {
       createdAt: formattedDate,
       nickname,
-      avatar:
-        "https://tse2.mm.bing.net/th?id=OIP.Nen6j3vBZdl8g8kzNfoEHQAAAA&pid=Api&P=0&h=220",
+      avatar: avatar ?? defaultUser,
       content,
       writedTo: selectChar(),
       id,
