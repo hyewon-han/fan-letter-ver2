@@ -64,7 +64,7 @@ function Form({ setChar }) {
           maxLength={80}
         />
 
-        <label htmlFor="select">Whose fan are you?</label>
+        <label htmlFor="select">Who is your favorite?</label>
         <StSelect id="select" onChange={selectChar} ref={selectRef}>
           <option value="woody">Woody</option>
           <option value="buzz">Buzz</option>
@@ -89,18 +89,6 @@ const StForm = styled.form`
   gap: 15px;
   border-radius: 10px;
   box-shadow: ${theme.boxShadow};
-`;
-
-const StInput = styled.input`
-  width: 300px;
-  height: 20px;
-  border-radius: 10px;
-  border: none;
-  transition: all 0.3s ease-in-out;
-  &:focus {
-    border: 1px solid ${theme.blue};
-    outline: 1px ridge ${theme.blue};
-  }
 `;
 
 const StDiv = styled.div`

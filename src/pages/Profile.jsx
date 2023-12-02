@@ -120,15 +120,15 @@ function Profile() {
         />
         {isEditing ? (
           <>
-            <input
+            <StInput
               defaultValue={nickname}
               onChange={(e) => setModifiedNickname(e.target.value)}
             />
             <div>{userId}</div>
-            <div>
+            <Btns>
               <Button value="취소" onClick={() => setIsEditing(false)} />
               <Button value="수정완료" onClick={onEditDone} />
-            </div>
+            </Btns>
           </>
         ) : (
           <>
@@ -155,6 +155,11 @@ const ProfileBox = styled.div`
   align-items: center;
   gap: 15px;
   border-radius: 20px;
+  box-shadow: ${theme.boxShadow};
+  & h2 {
+    font-size: 22px;
+    font-weight: 800;
+  }
 `;
 
 const Avatar = styled.img`
@@ -166,4 +171,23 @@ const Avatar = styled.img`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const StInput = styled.input`
+  width: 200px;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  transition: all 0.3s ease-in-out;
+  &:focus {
+    border: 1px solid ${theme.blue};
+    outline: 1px ridge ${theme.blue};
+  }
+`;
+
+const Btns = styled.div`
+  width: 300px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
 `;
