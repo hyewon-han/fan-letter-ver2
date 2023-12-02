@@ -220,16 +220,6 @@ const commentSlice = createSlice({
     [__updateUser.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.isError = false;
-      console.log(action.payload);
-      // state.letters.map((item) => {
-      //   if (item.id === action.payload.id)
-      //     return {
-      //       ...item,
-      //       nickname: action.payload.nickname,
-      //       avatar: action.payload.avatar,
-      //     };
-      //   else return item;
-      // });
       state.letters.map((letter) => {
         action.payload.targetIds.forEach((targetId) => {
           if (letter.id === targetId)
@@ -255,6 +245,11 @@ const commentSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
       state.userLetters = action.payload;
+    },
+    [__getUserLetters.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.payload;
     },
   },
 });

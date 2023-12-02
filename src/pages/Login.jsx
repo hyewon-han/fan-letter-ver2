@@ -49,7 +49,6 @@ function Login() {
       dispatch(loginUser({ accessToken, avatar, nickname, userId }));
       const notify = () => toast("로그인 성공!");
       notify();
-      // navigate("/");
     } catch (error) {
       console.log(error);
       const { response } = error;
@@ -70,7 +69,7 @@ function Login() {
       const response = await authApi.post("/register", signUpObj);
       console.log(response.data);
       dispatch(signUpUser());
-      const notify = () => toast("회원가입 성공!");
+      const notify = () => toast(response.data.message);
       notify();
     } catch (error) {
       const { response } = error;
