@@ -86,15 +86,6 @@
       "userId": "wow1234"
     },
     {
-      "createdAt": "23. 12. 02. 오후 01:37:32",
-      "nickname": "hyewon",
-      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/6e44f0bf-2ecb-4a0b-8ce4-ac3802fceae1.jpg",
-      "content": "fff",
-      "writedTo": "woody",
-      "id": "524fa625-c601-410e-ab51-0eb8fb8351a2",
-      "userId": "hw1635"
-    },
-    {
       "createdAt": "23. 12. 02. 오후 01:41:13",
       "nickname": "ㅎㅎ",
       "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/ea4bbbd3-30ae-440b-a0c1-ee7e688e0e9e.jpg",
@@ -104,30 +95,12 @@
       "userId": "hi1635"
     },
     {
-      "createdAt": "23. 12. 02. 오후 01:43:00",
-      "nickname": "hyewon",
-      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/6e44f0bf-2ecb-4a0b-8ce4-ac3802fceae1.jpg",
-      "content": "ddd",
-      "writedTo": "woody",
-      "id": "b280b7e6-5bba-4c47-94ee-79be72a803e1",
-      "userId": "hw1635"
-    },
-    {
       "createdAt": "23. 12. 02. 오후 01:50:55",
       "nickname": "hyewon",
       "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/6e44f0bf-2ecb-4a0b-8ce4-ac3802fceae1.jpg",
       "content": "gg",
       "writedTo": "woody",
       "id": "d7b352ce-118d-4c17-bac7-59ffc8ab39da",
-      "userId": "hw1635"
-    },
-    {
-      "createdAt": "23. 12. 02. 오후 01:52:01",
-      "nickname": "hyewon",
-      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/6e44f0bf-2ecb-4a0b-8ce4-ac3802fceae1.jpg",
-      "content": "ddd",
-      "writedTo": "woody",
-      "id": "74864b22-0889-4301-8453-66475e4a5b17",
       "userId": "hw1635"
     },
     {
@@ -147,6 +120,15 @@
       "writedTo": "woody",
       "id": "4606213d-bf82-4b9e-914f-b3a027f94c46",
       "userId": "hello1234"
+    },
+    {
+      "createdAt": "23. 12. 02. 오후 11:10:14",
+      "nickname": "와우제발",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/23-12-02/468c501e-373c-4bd4-b2f5-6e3ad2544bfa.jpg",
+      "content": "test",
+      "writedTo": "woody",
+      "id": "9359482a-37b3-4b96-840d-bac93e04890f",
+      "userId": "wow1234"
     }
   ]
 }
