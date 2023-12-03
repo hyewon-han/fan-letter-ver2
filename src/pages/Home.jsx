@@ -19,7 +19,7 @@ function Home() {
 
   useEffect(() => {
     dispatch(__getData());
-  }, []);
+  }, [dispatch]);
 
   const refreshToken = async () => {
     try {

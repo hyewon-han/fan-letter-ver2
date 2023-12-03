@@ -59,6 +59,7 @@ export const __deleteData = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       await jsonApi.delete(`/letters/${payload}`);
+      thunkAPI.dispatch(__getData());
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       console.log("error", error);
@@ -74,6 +75,7 @@ export const __updateData = createAsyncThunk(
       await jsonApi.patch(`/letters/${payload.id}`, {
         content: payload.textarea,
       });
+      thunkAPI.dispatch(__getData());
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       console.log("error", error);
@@ -119,20 +121,6 @@ const commentSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [__getData.pending]: (state, action) => {
-      state.isLoading = true;
-      state.isError = false;
-    },
-    [__getData.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.letters = action.payload;
-    },
-    [__getData.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.isError = true;
-      state.error = action.payload;
-    },
     [__getDetailData.pending]: (state, action) => {
       state.isLoading = true;
       state.isError = false;
@@ -227,6 +215,20 @@ const commentSlice = createSlice({
       state.userLetters = action.payload;
     },
     [__getUserLetters.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.payload;
+    },
+    [__getData.pending]: (state, action) => {
+      state.isLoading = true;
+      state.isError = false;
+    },
+    [__getData.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.letters = action.payload;
+    },
+    [__getData.rejected]: (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.error = action.payload;
