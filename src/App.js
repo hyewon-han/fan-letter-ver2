@@ -1,7 +1,7 @@
 import GlobalStyle from "./GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./GlobalStyle";
-import Router from "./shared/router";
+import Router from "./shared/Router";
 import { ToastContainer } from "react-toastify";
 
 function App() {
