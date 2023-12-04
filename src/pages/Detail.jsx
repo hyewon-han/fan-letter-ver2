@@ -13,6 +13,7 @@ import {
   __getDetailData,
   __updateData,
 } from "../redux/modules/commentSlice";
+import { getFormattedDate } from "../util/date";
 
 function Detail() {
   const { letter } = useSelector((state) => state.commentSlice);
@@ -71,7 +72,7 @@ function Detail() {
           <div>
             <StP>{letter?.nickname}</StP>
             <p>To. {letter?.writedTo}</p>
-            <p>{letter?.createdAt}</p>
+            <p>{getFormattedDate(letter?.createdAt)}</p>
           </div>
         </StDiv>
 
