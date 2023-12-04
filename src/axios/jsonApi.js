@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const jsonApi = axios.create({
-  baseURL: "https://serious-shade-weeder.glitch.me",
+  baseURL: process.env.REACT_APP_JSON_SERVER_URL,
 });
 
 export default jsonApi;
