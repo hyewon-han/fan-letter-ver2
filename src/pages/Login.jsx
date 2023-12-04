@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "../components/Button";
 import styled from "styled-components";
 import { theme } from "../GlobalStyle";
 import authApi from "../axios/authApi";
 import { useDispatch } from "react-redux";
 import { loginUser, signUpUser } from "../redux/modules/authSlice";
-import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,6 +12,8 @@ function Login() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
+  const [joinId, setJoinId] = useState("");
+  const [joinPassword, setJoinPassword] = useState("");
   const [isLoginPage, setIsLoginPage] = useState(true);
   const dispatch = useDispatch();
   let isLoginButtonEnabled = false;
@@ -24,12 +25,15 @@ function Login() {
     if (name === "id") setId(value);
     if (name === "password") setPassword(value);
     if (name === "nickname") setNickname(value);
+    if (name === "joinId") setJoinId(value);
+    if (name === "joinPassword") setJoinPassword(value);
   };
-
+  console.log(joinId, joinPassword, nickname);
   if (isLoginPage) {
     isLoginButtonEnabled = id !== "" && password !== "";
   } else {
-    isLoginButtonEnabled = id !== "" && password !== "" && nickname !== "";
+    isLoginButtonEnabled =
+      joinId !== "" && joinPassword !== "" && nickname !== "";
   }
 
   const signIn = async (e) => {
@@ -58,8 +62,8 @@ function Login() {
   const signUp = async (e) => {
     e.preventDefault();
     const signUpObj = {
-      id,
-      password,
+      id: joinId,
+      password: joinPassword,
       nickname,
     };
     try {
@@ -108,16 +112,16 @@ function Login() {
           <h1>JOIN 😀</h1>
           <input
             type="text"
-            value={id}
-            name="id"
+            value={joinId}
+            name="joinId"
             onChange={onChangeInput}
             required
             placeholder="아이디 (4 ~ 10글자)"
           />
           <input
             type="password"
-            value={password}
-            name="password"
+            value={joinPassword}
+            name="joinPassword"
             onChange={onChangeInput}
             required
             placeholder="비밀번호 (4 ~ 15글자)"
