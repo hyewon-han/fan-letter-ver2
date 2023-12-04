@@ -5,7 +5,7 @@ import { theme } from "../GlobalStyle";
 import authApi from "../axios/authApi";
 import { useDispatch } from "react-redux";
 import { loginUser, signUpUser } from "../redux/modules/authSlice";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
@@ -28,7 +28,7 @@ function Login() {
     if (name === "joinId") setJoinId(value);
     if (name === "joinPassword") setJoinPassword(value);
   };
-  console.log(joinId, joinPassword, nickname);
+
   if (isLoginPage) {
     isLoginButtonEnabled = id !== "" && password !== "";
   } else {
@@ -43,19 +43,14 @@ function Login() {
       password,
     };
     try {
-      const response = await authApi.post("/login", signInObj);
-      const accessToken = response.data.accessToken;
-      const avatar = response.data.avatar;
-      const nickname = response.data.nickname;
-      const userId = response.data.userId;
+      const { data } = await authApi.post("/login", signInObj);
+      const { accessToken, avatar, nickname, userId } = data;
       dispatch(loginUser({ accessToken, avatar, nickname, userId }));
-      const notify = () => toast("로그인 성공!");
-      notify();
+      toast.success("로그인 성공!");
     } catch (error) {
       console.log(error);
       const { response } = error;
-      const notify = () => toast(response.data.message);
-      notify();
+      toast.error(response.data.message);
     }
   };
 
@@ -70,19 +65,16 @@ function Login() {
       const response = await authApi.post("/register", signUpObj);
       console.log(response.data);
       dispatch(signUpUser());
-      const notify = () => toast(response.data.message);
-      notify();
+      toast.success(response.data.message);
     } catch (error) {
       const { response } = error;
       console.log(response);
-      const notify = () => toast(response.data.message);
-      notify();
+      toast.error(response.data.message);
     }
   };
 
   return (
     <Container>
-      <ToastContainer />
       {isLoginPage ? (
         <StForm onSubmit={signIn}>
           <h1>LOG IN 😀</h1>
@@ -93,6 +85,8 @@ function Login() {
             onChange={onChangeInput}
             required
             placeholder="아이디 (4 ~ 10글자)"
+            minLength={4}
+            maxLength={10}
           />
           <input
             type="password"
@@ -101,6 +95,8 @@ function Login() {
             onChange={onChangeInput}
             required
             placeholder="비밀번호 (4 ~ 15글자)"
+            minLength={4}
+            maxLength={15}
           />
           <Btns>
             <Button value="LOGIN" disabled={!isLoginButtonEnabled} />
@@ -117,6 +113,8 @@ function Login() {
             onChange={onChangeInput}
             required
             placeholder="아이디 (4 ~ 10글자)"
+            minLength={4}
+            maxLength={10}
           />
           <input
             type="password"
@@ -125,6 +123,8 @@ function Login() {
             onChange={onChangeInput}
             required
             placeholder="비밀번호 (4 ~ 15글자)"
+            minLength={4}
+            maxLength={15}
           />
           <input
             type="text"
@@ -133,6 +133,8 @@ function Login() {
             onChange={onChangeInput}
             required
             placeholder="닉네임 (1 ~ 10글자)"
+            minLength={1}
+            maxLength={10}
           />
           <Btns>
             <Button value="JOIN" disabled={!isLoginButtonEnabled} />

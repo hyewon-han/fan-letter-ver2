@@ -1,10 +1,6 @@
 import commentSlice from "../modules/commentSlice";
 import authSlice from "../modules/authSlice";
-import {
-  combineReducers,
-  configureStore,
-  getDefaultMiddleware,
-} from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import { persistStore, persistReducer } from "redux-persist";
 

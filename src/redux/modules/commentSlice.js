@@ -189,7 +189,7 @@ const commentSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
       state.letters.map((letter) => {
-        action.payload.targetIds.forEach((targetId) => {
+        return action.payload.targetIds.forEach((targetId) => {
           if (letter.id === targetId)
             return {
               ...letter,
@@ -236,5 +236,5 @@ const commentSlice = createSlice({
   },
 });
 
-export const { createData, updateData, deleteData } = commentSlice.actions;
+// export const { createData, updateData, deleteData } = commentSlice.actions;
 export default commentSlice.reducer;

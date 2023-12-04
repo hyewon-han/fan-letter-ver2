@@ -21,13 +21,8 @@ const Router = () => {
           </Route>
         ) : (
           <>
-            <Route path="/" element={<Navigate replace to="/login" />} />
-            <Route
-              path="/detail/:id"
-              element={<Navigate replace to="/login" />}
-            />
-            <Route path="/profile" element={<Navigate replace to="/login" />} />
             <Route path="/login" element={<Login />} />
+            <Route path="*" element={<Navigate replace to="/login" />} />
           </>
         )}
       </Routes>

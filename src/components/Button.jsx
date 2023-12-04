@@ -49,16 +49,15 @@ const StBtn = styled.button`
   }}
 
   ${(props) => {
-    switch (props.disabled) {
-      case true:
-        return css`
-          background-color: gray;
-          color: darkgray;
-          &:hover {
-            cursor: default;
-            filter: none;
-          }
-        `;
+    if (props.disabled) {
+      return css`
+        background-color: gray;
+        color: darkgray;
+        &:hover {
+          cursor: default;
+          filter: none;
+        }
+      `;
     }
   }}
 `;

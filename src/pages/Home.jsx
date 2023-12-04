@@ -4,13 +4,13 @@ import Form from "../components/Form";
 import Comment from "../components/Comment";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { __getData } from "../redux/modules/commentSlice";
 import authApi from "../axios/authApi";
 import { logoutUser } from "../redux/modules/authSlice";
 
 function Home() {
-  const { letters, isLoading, isError, error } = useSelector(
+  const { letters, isLoading, error } = useSelector(
     (state) => state.commentSlice
   );
   const { accessToken } = useSelector((state) => state.authSlice);
@@ -32,22 +32,20 @@ function Home() {
       console.log(response);
     } catch (error) {
       console.log("error", error.response.data.message);
-      const notify = () => toast(error.response.data.message);
-      notify();
+      toast.error(error.response.data.message);
       dispatch(logoutUser());
     }
   };
   refreshToken();
   if (error) {
-    return <div>{error.message}</div>;
+    return <StDiv>{error.message}</StDiv>;
   }
   return (
     <>
-      <ToastContainer />
       <CharTab char={char} setChar={setChar} />
       <Form setChar={setChar} />
       {isLoading ? (
-        <div>로딩중...</div>
+        <StDiv>로딩중...</StDiv>
       ) : (
         <div>
           {letters

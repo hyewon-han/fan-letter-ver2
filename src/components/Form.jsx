@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import Button from "./Button";
 import defaultUser from "../assets/default-user.jpeg";
 import { useDispatch, useSelector } from "react-redux";
-import { __createData, createData } from "../redux/modules/commentSlice";
+import { __createData } from "../redux/modules/commentSlice";
 
 function Form({ setChar }) {
   const [content, setContent] = useState("");
@@ -20,20 +20,20 @@ function Form({ setChar }) {
     return selectedChar;
   };
 
-  const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-    year: "2-digit",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true,
-  }).format(new Date());
+  // const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+  //   year: "2-digit",
+  //   month: "2-digit",
+  //   day: "2-digit",
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  //   second: "2-digit",
+  //   hour12: true,
+  // }).format(new Date());
 
   const createComment = (e) => {
     e.preventDefault();
     const commentObj = {
-      createdAt: formattedDate,
+      createdAt: Date.now(),
       nickname,
       avatar: avatar ?? defaultUser,
       content,

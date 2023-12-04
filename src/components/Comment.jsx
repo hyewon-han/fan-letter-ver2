@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../GlobalStyle";
+import { getFormattedDate } from "../util/date";
 
 function Comment({ comment }) {
   return (
@@ -10,7 +11,7 @@ function Comment({ comment }) {
         <StImg src={comment.avatar} />
         <div>
           <StSpan>{comment.nickname}</StSpan>
-          <p>{comment.createdAt}</p>
+          <p>{getFormattedDate(comment.createdAt)}</p>
           <p>
             {comment.content?.length > 40
               ? `${comment.content.slice(0, 40)}...`

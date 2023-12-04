@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
 import authApi from "../axios/authApi";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { editUser, logoutUser } from "../redux/modules/authSlice";
 import { __getUserLetters, __updateUser } from "../redux/modules/commentSlice";
 import defaultUser from "../assets/default-user.jpeg";
@@ -18,33 +18,23 @@ function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [modifiedNickname, setModifiedNickname] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
-  const [modifiedAvatar, setModifiedAvatar] = useState(null);
+  const [modifiedAvatar, setModifiedAvatar] = useState(avatar);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(__getUserLetters(userId));
-  }, []);
+  }, [dispatch, userId]);
 
   const handleAvatarClick = () => {
-    document.getElementById("fileInput").click();
+    if (isEditing) {
+      document.getElementById("fileInput").click();
+    }
   };
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    console.log("selectedFile", selectedFile);
-    // const imgUrl = URL.createObjectURL(selectedFile);
-    // console.log("imgUrl", imgUrl);
+    const imgUrl = URL.createObjectURL(selectedFile);
+    setImagePreview(imgUrl);
     setModifiedAvatar(selectedFile);
-
-    if (selectedFile) {
-      // FileReader를 사용하여 이미지 파일을 Base64로 읽음
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // 읽어들인 이미지 데이터를 상태로 설정하여 프리뷰 갱신
-        setImagePreview(reader.result);
-      };
-      // 이미지 파일을 Base64로 읽어들임
-      reader.readAsDataURL(selectedFile);
-    }
   };
 
   const onEditDone = async () => {
@@ -59,16 +49,17 @@ function Profile() {
         },
       });
       console.log("data", data);
-      const notify = () => toast(data.message);
-      notify();
+      toast.success(data.message);
       const edittedNickname = data.nickname;
       const edittedAvatar = data.avatar;
+      // authApi patch 요청
       dispatch(
         editUser({
           nickname: edittedNickname || nickname,
           avatar: edittedAvatar || avatar,
         })
       );
+      // jsonApi patch 요청
       dispatch(
         __updateUser({
           targetIds,
@@ -79,9 +70,7 @@ function Profile() {
       setIsEditing(false);
     } catch (error) {
       console.log("error", error);
-
-      const notify = () => toast(error.response.data.message);
-      notify();
+      toast.error(error.response.data.message);
     }
   };
   const refreshToken = async () => {
@@ -96,20 +85,19 @@ function Profile() {
     } catch (error) {
       console.log(error);
       console.log("error", error.response.data.message);
-      const notify = () => toast(error.response.data.message);
-      notify();
+      toast.error(error.response.data.message);
       dispatch(logoutUser());
     }
   };
   refreshToken();
   return (
     <>
-      <ToastContainer />
       <ProfileBox>
         <h2>MY PROFILE</h2>
         <Avatar
           src={imagePreview || avatar || defaultUser}
           onClick={handleAvatarClick}
+          isediting={isEditing.toString()}
         />
         <input
           type="file"
@@ -122,12 +110,17 @@ function Profile() {
           <>
             <StInput
               defaultValue={nickname}
+              autoFocus
               onChange={(e) => setModifiedNickname(e.target.value)}
             />
             <div>{userId}</div>
             <Btns>
               <Button value="취소" onClick={() => setIsEditing(false)} />
-              <Button value="수정완료" onClick={onEditDone} />
+              <Button
+                value="수정완료"
+                onClick={onEditDone}
+                disabled={!modifiedNickname && modifiedAvatar === avatar}
+              />
             </Btns>
           </>
         ) : (
@@ -169,7 +162,14 @@ const Avatar = styled.img`
   height: 200px;
   box-shadow: ${theme.boxShadow};
   &:hover {
-    cursor: pointer;
+    ${(props) =>
+      props.isediting === "true"
+        ? css`
+            cursor: pointer;
+          `
+        : css`
+            cursor: default;
+          `}
   }
 `;
 
