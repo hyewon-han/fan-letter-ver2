@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const authApi = axios.create({
-  baseURL: process.env.REACT_APP_AUTH_SERVER_URL,
+  baseURL: "https://moneyfulpublicpolicy.co.kr",
 });
 
 export default authApi;
