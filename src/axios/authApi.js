@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const instance = axios.create({
+const authApi = axios.create({
   baseURL: "https://moneyfulpublicpolicy.co.kr",
 });
 
-export default instance;
+export default authApi;

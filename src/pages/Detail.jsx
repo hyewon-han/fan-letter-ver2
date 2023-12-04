@@ -4,13 +4,12 @@ import styled from "styled-components";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { logoutUser } from "../redux/modules/authSlice";
 import authApi from "../axios/authApi";
 
 import {
   __deleteData,
-  __getData,
   __getDetailData,
   __updateData,
 } from "../redux/modules/commentSlice";
@@ -46,7 +45,7 @@ function Detail() {
 
   useEffect(() => {
     dispatch(__getDetailData(id));
-  }, []);
+  }, [dispatch, id]);
 
   const refreshToken = async () => {
     try {
@@ -59,8 +58,7 @@ function Detail() {
       console.log(response);
     } catch (error) {
       console.log(error);
-      const notify = () => toast(error.response.data.message);
-      notify();
+      toast.error(error.response.data.message);
       dispatch(logoutUser());
     }
   };

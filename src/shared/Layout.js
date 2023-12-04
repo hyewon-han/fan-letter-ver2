@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { theme } from "../GlobalStyle";
 import Button from "../components/Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logoutUser } from "../redux/modules/authSlice";
 
 function Layout() {
@@ -52,6 +52,7 @@ const StHeader = styled.header`
   color: white;
   margin-bottom: 30px;
   font-size: 22px;
+  user-select: none;
   background-color: ${theme.yellow};
 `;
 

@@ -13,11 +13,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action) => {
+      const { accessToken, avatar, nickname, userId } = action.payload;
       state.isLoggedIn = true;
-      state.accessToken = action.payload.accessToken;
-      state.avatar = action.payload.avatar;
-      state.nickname = action.payload.nickname;
-      state.userId = action.payload.userId;
+      state.accessToken = accessToken;
+      state.avatar = avatar;
+      state.nickname = nickname;
+      state.userId = userId;
     },
     signUpUser: (state, action) => {
       state.isLoggedIn = true;
@@ -30,8 +31,9 @@ const authSlice = createSlice({
       state.userId = "";
     },
     editUser: (state, action) => {
-      state.avatar = action.payload.avatar;
-      state.nickname = action.payload.nickname;
+      const { avatar, nickname } = action.payload;
+      state.avatar = avatar;
+      state.nickname = nickname;
     },
   },
 });
