@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../GlobalStyle";
@@ -7,30 +7,45 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { logoutUser } from "../redux/modules/authSlice";
 import authApi from "../axios/authApi";
-
-import {
-  __deleteData,
-  __getDetailData,
-  __updateData,
-} from "../redux/modules/commentSlice";
 import { getFormattedDate } from "../util/date";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getLetters } from "../api/queryFns";
+import { deleteLetter, editLetter } from "../api/mutationFns";
 
 function Detail() {
-  const { letter } = useSelector((state) => state.commentSlice);
   const dispatch = useDispatch();
   const { id } = useParams();
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   const [textarea, setTextarea] = useState();
   const navigate = useNavigate();
-  const { userId } = useSelector((state) => state.authSlice);
+  const myUserId = useSelector((state) => state.authSlice.userId);
   const { accessToken } = useSelector((state) => state.authSlice);
 
+  const { data: letters } = useQuery({
+    queryKey: ["letters"],
+    queryFn: getLetters,
+  });
+
+  const queryClient = useQueryClient();
+  const { mutate: mutateToDelete } = useMutation({
+    mutationFn: deleteLetter,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(["letters"]);
+    },
+  });
+
+  const { mutate: mutateToEdit } = useMutation({
+    mutationFn: editLetter,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(["letters"]);
+    },
+  });
   const updateComment = () => {
-    if (textarea === letter?.content) alert("수정사항이 없습니다.");
+    if (textarea === content) alert("수정사항이 없습니다.");
     else {
       const result = window.confirm("이대로 수정하시겠습니까?");
       if (result) {
-        dispatch(__updateData({ id, textarea }));
+        mutateToEdit({ id, textarea });
         navigate("/");
       }
     }
@@ -39,14 +54,10 @@ function Detail() {
   const deleteComment = () => {
     const result = window.confirm("정말 삭제하시겠습니까?");
     if (result) {
-      dispatch(__deleteData(id));
+      mutateToDelete(id);
       navigate("/");
     }
   };
-
-  useEffect(() => {
-    dispatch(__getDetailData(id));
-  }, [dispatch, id]);
 
   const refreshToken = async () => {
     try {
@@ -64,22 +75,24 @@ function Detail() {
     }
   };
   refreshToken();
+  const { avatar, nickname, createdAt, writedTo, content, userId } =
+    letters.find((letter) => letter.id === id);
   return (
     <Wrap>
       <CommentBox>
         <StDiv>
-          <StImg src={letter?.avatar} />
+          <StImg src={avatar} />
           <div>
-            <StP>{letter?.nickname}</StP>
-            <p>To. {letter?.writedTo}</p>
-            <p>{getFormattedDate(letter?.createdAt)}</p>
+            <StP>{nickname}</StP>
+            <p>To. {writedTo}</p>
+            <p>{getFormattedDate(createdAt)}</p>
           </div>
         </StDiv>
 
-        {userId === letter?.userId ? (
+        {myUserId === userId ? (
           isInputDisabled ? (
             <>
-              <CommentContent>{letter?.content}</CommentContent>
+              <CommentContent>{content}</CommentContent>
               <Btns>
                 <Button
                   value="수정"
@@ -92,7 +105,7 @@ function Detail() {
             <>
               <StTextarea
                 type="text"
-                defaultValue={letter.content}
+                defaultValue={content}
                 disabled={isInputDisabled}
                 onChange={(e) => setTextarea(e.target.value)}
               />
@@ -103,7 +116,7 @@ function Detail() {
             </>
           )
         ) : (
-          <CommentContent>{letter?.content}</CommentContent>
+          <CommentContent>{content}</CommentContent>
         )}
       </CommentBox>
     </Wrap>

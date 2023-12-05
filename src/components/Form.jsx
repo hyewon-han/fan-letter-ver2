@@ -4,31 +4,28 @@ import { theme } from "../GlobalStyle";
 import { v4 as uuidv4 } from "uuid";
 import Button from "./Button";
 import defaultUser from "../assets/default-user.jpeg";
-import { useDispatch, useSelector } from "react-redux";
-import { __createData } from "../redux/modules/commentSlice";
+import { useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addLetter } from "../api/mutationFns";
 
 function Form({ setChar }) {
   const [content, setContent] = useState("");
   const id = uuidv4();
   const selectRef = useRef();
-  const dispatch = useDispatch();
   const { avatar, nickname, userId } = useSelector((state) => state.authSlice);
+  const queryClient = useQueryClient();
+  const { mutate: mutateToAdd } = useMutation({
+    mutationFn: addLetter,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(["letters"]);
+    },
+  });
 
   const selectChar = () => {
     const selectedChar = selectRef.current.value;
     setChar(selectRef.current.value);
     return selectedChar;
   };
-
-  // const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-  //   year: "2-digit",
-  //   month: "2-digit",
-  //   day: "2-digit",
-  //   hour: "2-digit",
-  //   minute: "2-digit",
-  //   second: "2-digit",
-  //   hour12: true,
-  // }).format(new Date());
 
   const createComment = (e) => {
     e.preventDefault();
@@ -41,8 +38,7 @@ function Form({ setChar }) {
       id,
       userId,
     };
-    dispatch(__createData(commentObj));
-
+    mutateToAdd(commentObj);
     setContent("");
   };
   return (
